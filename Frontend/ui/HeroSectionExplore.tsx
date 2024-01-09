@@ -1,7 +1,7 @@
 //ヒーローセクション.explore
 import { Center,Box,VStack } from "@yamada-ui/react";
 
-export function HeroSection() {
+export function HeroSectionExplore() {
     return(
         <div>
             

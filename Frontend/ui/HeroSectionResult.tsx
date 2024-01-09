@@ -1,7 +1,7 @@
 //ヒーローセクション.result
 import {Center,Box,VStack } from "@yamada-ui/react";
 
-export function HeroSectinon() {
+export function HeroSectionResult() {
     return(
         <div>
             
