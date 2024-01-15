@@ -23,7 +23,7 @@ export default function Check(){
         <Checkbox size="lg">{item}</Checkbox>
       ))}
     </div>
-    <div className='flex justify-center pt-12'>
+    <div className='flex justify-center py-20'>
       <RadiusButton href='/slide' className='bg-gradient-to-tr from-blue-400 to-pink-300'>
         <Image src="/next_grad.svg" alt='ゲーミングNEXT' width={100} height={100}/>
       </RadiusButton>
