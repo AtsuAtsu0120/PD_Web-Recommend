@@ -17,6 +17,8 @@ const (
 	FieldFilePath = "file_path"
 	// FieldURL holds the string denoting the url field in the database.
 	FieldURL = "url"
+	// FieldBright holds the string denoting the bright field in the database.
+	FieldBright = "bright"
 	// FieldFlashy holds the string denoting the flashy field in the database.
 	FieldFlashy = "flashy"
 	// FieldAdult holds the string denoting the adult field in the database.
@@ -37,6 +39,7 @@ var Columns = []string{
 	FieldName,
 	FieldFilePath,
 	FieldURL,
+	FieldBright,
 	FieldFlashy,
 	FieldAdult,
 	FieldSmart,
@@ -75,6 +78,11 @@ func ByFilePath(opts ...sql.OrderTermOption) OrderOption {
 // ByURL orders the results by the url field.
 func ByURL(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldURL, opts...).ToFunc()
+}
+
+// ByBright orders the results by the bright field.
+func ByBright(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBright, opts...).ToFunc()
 }
 
 // ByFlashy orders the results by the flashy field.

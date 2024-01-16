@@ -3,9 +3,11 @@ package main
 import (
 	"Backend/ent"
 	"context"
-	"fmt"
+	"encoding/csv"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
+	"os"
+	"strconv"
 )
 
 func main() {
@@ -19,22 +21,54 @@ func main() {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
 
-	website, err := createWebSite(context.Background(), client)
-	if err != nil {
-
-	}
-	log.Println("website was created: ", website)
+	csvToDb(context.Background(), client)
 }
 
-func createWebSite(ctx context.Context, client *ent.Client) (*ent.Website, error) {
-	website, err := client.Website.Create().
-		SetName("株式会社 CirKit").SetFilePath("/cirkit.png").
-		SetURL("https://cirkit.jp/").SetFlashy(3).SetBeautiful(2).
-		SetAdult(1).SetSmart(2).SetLike(1).Save(ctx)
-
+func csvToDb(ctx context.Context, client *ent.Client) {
+	file, err := os.Open("file.csv")
 	if err != nil {
-		return nil, fmt.Errorf("failed creating website: %w", err)
+		log.Fatalf(err.Error())
+	}
+	defer file.Close()
+
+	r := csv.NewReader(file)
+	rows, err := r.ReadAll()
+	if err != nil {
+		log.Fatalf(err.Error())
 	}
 
-	return website, nil
+	for _, v := range rows {
+		flashy, err := strconv.ParseFloat(v[2], 32)
+		if err != nil {
+			log.Fatalf(err.Error())
+		}
+
+		adult, err := strconv.ParseFloat(v[3], 32)
+		if err != nil {
+			log.Fatalf(err.Error())
+		}
+
+		bright, err := strconv.ParseFloat(v[4], 32)
+		if err != nil {
+			log.Fatalf(err.Error())
+		}
+		smart, err := strconv.ParseFloat(v[5], 32)
+		if err != nil {
+			log.Fatalf(err.Error())
+		}
+
+		beatiful, err := strconv.ParseFloat(v[6], 32)
+		if err != nil {
+			log.Fatalf(err.Error())
+		}
+
+		like, err := strconv.ParseFloat(v[7], 32)
+		if err != nil {
+			log.Fatalf(err.Error())
+		}
+		client.Website.Create().
+			SetName(v[0]).SetFilePath("/" + v[0] + ".png").
+			SetURL(v[1]).SetFlashy(flashy).SetBeautiful(beatiful).
+			SetAdult(adult).SetSmart(smart).SetLike(like).SetBright(bright).Save(ctx)
+	}
 }

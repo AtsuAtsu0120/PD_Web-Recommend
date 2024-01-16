@@ -16,6 +16,7 @@ func (Website) Fields() []ent.Field {
 		field.String("name").Unique(),
 		field.String("filePath").Unique(),
 		field.String("url").Unique(),
+		field.Float("bright").Nillable(),
 		field.Float("flashy").Nillable(),
 		field.Float("adult").Nillable(),
 		field.Float("smart").Nillable(),

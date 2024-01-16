@@ -68,6 +68,11 @@ func URL(v string) predicate.Website {
 	return predicate.Website(sql.FieldEQ(FieldURL, v))
 }
 
+// Bright applies equality check predicate on the "bright" field. It's identical to BrightEQ.
+func Bright(v float64) predicate.Website {
+	return predicate.Website(sql.FieldEQ(FieldBright, v))
+}
+
 // Flashy applies equality check predicate on the "flashy" field. It's identical to FlashyEQ.
 func Flashy(v float64) predicate.Website {
 	return predicate.Website(sql.FieldEQ(FieldFlashy, v))
@@ -286,6 +291,46 @@ func URLEqualFold(v string) predicate.Website {
 // URLContainsFold applies the ContainsFold predicate on the "url" field.
 func URLContainsFold(v string) predicate.Website {
 	return predicate.Website(sql.FieldContainsFold(FieldURL, v))
+}
+
+// BrightEQ applies the EQ predicate on the "bright" field.
+func BrightEQ(v float64) predicate.Website {
+	return predicate.Website(sql.FieldEQ(FieldBright, v))
+}
+
+// BrightNEQ applies the NEQ predicate on the "bright" field.
+func BrightNEQ(v float64) predicate.Website {
+	return predicate.Website(sql.FieldNEQ(FieldBright, v))
+}
+
+// BrightIn applies the In predicate on the "bright" field.
+func BrightIn(vs ...float64) predicate.Website {
+	return predicate.Website(sql.FieldIn(FieldBright, vs...))
+}
+
+// BrightNotIn applies the NotIn predicate on the "bright" field.
+func BrightNotIn(vs ...float64) predicate.Website {
+	return predicate.Website(sql.FieldNotIn(FieldBright, vs...))
+}
+
+// BrightGT applies the GT predicate on the "bright" field.
+func BrightGT(v float64) predicate.Website {
+	return predicate.Website(sql.FieldGT(FieldBright, v))
+}
+
+// BrightGTE applies the GTE predicate on the "bright" field.
+func BrightGTE(v float64) predicate.Website {
+	return predicate.Website(sql.FieldGTE(FieldBright, v))
+}
+
+// BrightLT applies the LT predicate on the "bright" field.
+func BrightLT(v float64) predicate.Website {
+	return predicate.Website(sql.FieldLT(FieldBright, v))
+}
+
+// BrightLTE applies the LTE predicate on the "bright" field.
+func BrightLTE(v float64) predicate.Website {
+	return predicate.Website(sql.FieldLTE(FieldBright, v))
 }
 
 // FlashyEQ applies the EQ predicate on the "flashy" field.
