@@ -1,6 +1,6 @@
 import { HeroSection } from '@/ui/HeroSection-Explore'
 import { RadiusButton } from '@/ui/RadiusButton'
-import { Checkbox, Text, Wrap, Slider } from "@yamada-ui/react"
+import { Checkbox, Text, Wrap, Slider, SliderTrack, SliderThumb } from "@yamada-ui/react"
 import Image from 'next/image'
 
 type SliderText = {
@@ -43,12 +43,12 @@ export default function Slidef(){
     <Text className="text-center">それぞれの印象の程度を入力</Text>
       {inshoData.map((item) => (
         // eslint-disable-next-line react/jsx-key
-        <div className='flex justify-center pb-5'>
+        <div className='flex-col justify-center pb-5'>
           <div className='w-96 flex justify-between'>
             <div>{item.positive}</div>
             <div>{item.negative}</div>
           </div>
-          <Slider/>
+          <input type="range" min="-3" max="3" className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"/>
         </div>
       ))}
     </div>
