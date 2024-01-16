@@ -69,6 +69,27 @@ func (wu *WebsiteUpdate) SetNillableURL(s *string) *WebsiteUpdate {
 	return wu
 }
 
+// SetBright sets the "bright" field.
+func (wu *WebsiteUpdate) SetBright(f float64) *WebsiteUpdate {
+	wu.mutation.ResetBright()
+	wu.mutation.SetBright(f)
+	return wu
+}
+
+// SetNillableBright sets the "bright" field if the given value is not nil.
+func (wu *WebsiteUpdate) SetNillableBright(f *float64) *WebsiteUpdate {
+	if f != nil {
+		wu.SetBright(*f)
+	}
+	return wu
+}
+
+// AddBright adds f to the "bright" field.
+func (wu *WebsiteUpdate) AddBright(f float64) *WebsiteUpdate {
+	wu.mutation.AddBright(f)
+	return wu
+}
+
 // SetFlashy sets the "flashy" field.
 func (wu *WebsiteUpdate) SetFlashy(f float64) *WebsiteUpdate {
 	wu.mutation.ResetFlashy()
@@ -224,6 +245,12 @@ func (wu *WebsiteUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := wu.mutation.URL(); ok {
 		_spec.SetField(website.FieldURL, field.TypeString, value)
 	}
+	if value, ok := wu.mutation.Bright(); ok {
+		_spec.SetField(website.FieldBright, field.TypeFloat64, value)
+	}
+	if value, ok := wu.mutation.AddedBright(); ok {
+		_spec.AddField(website.FieldBright, field.TypeFloat64, value)
+	}
 	if value, ok := wu.mutation.Flashy(); ok {
 		_spec.SetField(website.FieldFlashy, field.TypeFloat64, value)
 	}
@@ -313,6 +340,27 @@ func (wuo *WebsiteUpdateOne) SetNillableURL(s *string) *WebsiteUpdateOne {
 	if s != nil {
 		wuo.SetURL(*s)
 	}
+	return wuo
+}
+
+// SetBright sets the "bright" field.
+func (wuo *WebsiteUpdateOne) SetBright(f float64) *WebsiteUpdateOne {
+	wuo.mutation.ResetBright()
+	wuo.mutation.SetBright(f)
+	return wuo
+}
+
+// SetNillableBright sets the "bright" field if the given value is not nil.
+func (wuo *WebsiteUpdateOne) SetNillableBright(f *float64) *WebsiteUpdateOne {
+	if f != nil {
+		wuo.SetBright(*f)
+	}
+	return wuo
+}
+
+// AddBright adds f to the "bright" field.
+func (wuo *WebsiteUpdateOne) AddBright(f float64) *WebsiteUpdateOne {
+	wuo.mutation.AddBright(f)
 	return wuo
 }
 
@@ -500,6 +548,12 @@ func (wuo *WebsiteUpdateOne) sqlSave(ctx context.Context) (_node *Website, err e
 	}
 	if value, ok := wuo.mutation.URL(); ok {
 		_spec.SetField(website.FieldURL, field.TypeString, value)
+	}
+	if value, ok := wuo.mutation.Bright(); ok {
+		_spec.SetField(website.FieldBright, field.TypeFloat64, value)
+	}
+	if value, ok := wuo.mutation.AddedBright(); ok {
+		_spec.AddField(website.FieldBright, field.TypeFloat64, value)
 	}
 	if value, ok := wuo.mutation.Flashy(); ok {
 		_spec.SetField(website.FieldFlashy, field.TypeFloat64, value)

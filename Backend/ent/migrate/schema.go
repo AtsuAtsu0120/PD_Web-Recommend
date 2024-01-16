@@ -24,6 +24,7 @@ var (
 		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "file_path", Type: field.TypeString, Unique: true},
 		{Name: "url", Type: field.TypeString, Unique: true},
+		{Name: "bright", Type: field.TypeFloat64},
 		{Name: "flashy", Type: field.TypeFloat64},
 		{Name: "adult", Type: field.TypeFloat64},
 		{Name: "smart", Type: field.TypeFloat64},

@@ -37,6 +37,12 @@ func (wc *WebsiteCreate) SetURL(s string) *WebsiteCreate {
 	return wc
 }
 
+// SetBright sets the "bright" field.
+func (wc *WebsiteCreate) SetBright(f float64) *WebsiteCreate {
+	wc.mutation.SetBright(f)
+	return wc
+}
+
 // SetFlashy sets the "flashy" field.
 func (wc *WebsiteCreate) SetFlashy(f float64) *WebsiteCreate {
 	wc.mutation.SetFlashy(f)
@@ -110,6 +116,9 @@ func (wc *WebsiteCreate) check() error {
 	if _, ok := wc.mutation.URL(); !ok {
 		return &ValidationError{Name: "url", err: errors.New(`ent: missing required field "Website.url"`)}
 	}
+	if _, ok := wc.mutation.Bright(); !ok {
+		return &ValidationError{Name: "bright", err: errors.New(`ent: missing required field "Website.bright"`)}
+	}
 	if _, ok := wc.mutation.Flashy(); !ok {
 		return &ValidationError{Name: "flashy", err: errors.New(`ent: missing required field "Website.flashy"`)}
 	}
@@ -162,6 +171,10 @@ func (wc *WebsiteCreate) createSpec() (*Website, *sqlgraph.CreateSpec) {
 	if value, ok := wc.mutation.URL(); ok {
 		_spec.SetField(website.FieldURL, field.TypeString, value)
 		_node.URL = value
+	}
+	if value, ok := wc.mutation.Bright(); ok {
+		_spec.SetField(website.FieldBright, field.TypeFloat64, value)
+		_node.Bright = &value
 	}
 	if value, ok := wc.mutation.Flashy(); ok {
 		_spec.SetField(website.FieldFlashy, field.TypeFloat64, value)

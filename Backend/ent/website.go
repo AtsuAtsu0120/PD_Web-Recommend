@@ -22,6 +22,8 @@ type Website struct {
 	FilePath string `json:"filePath,omitempty"`
 	// URL holds the value of the "url" field.
 	URL string `json:"url,omitempty"`
+	// Bright holds the value of the "bright" field.
+	Bright *float64 `json:"bright,omitempty"`
 	// Flashy holds the value of the "flashy" field.
 	Flashy *float64 `json:"flashy,omitempty"`
 	// Adult holds the value of the "adult" field.
@@ -40,7 +42,7 @@ func (*Website) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case website.FieldFlashy, website.FieldAdult, website.FieldSmart, website.FieldBeautiful, website.FieldLike:
+		case website.FieldBright, website.FieldFlashy, website.FieldAdult, website.FieldSmart, website.FieldBeautiful, website.FieldLike:
 			values[i] = new(sql.NullFloat64)
 		case website.FieldID:
 			values[i] = new(sql.NullInt64)
@@ -84,6 +86,13 @@ func (w *Website) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field url", values[i])
 			} else if value.Valid {
 				w.URL = value.String
+			}
+		case website.FieldBright:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field bright", values[i])
+			} else if value.Valid {
+				w.Bright = new(float64)
+				*w.Bright = value.Float64
 			}
 		case website.FieldFlashy:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -164,6 +173,11 @@ func (w *Website) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("url=")
 	builder.WriteString(w.URL)
+	builder.WriteString(", ")
+	if v := w.Bright; v != nil {
+		builder.WriteString("bright=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	if v := w.Flashy; v != nil {
 		builder.WriteString("flashy=")

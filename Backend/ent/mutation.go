@@ -300,6 +300,8 @@ type WebsiteMutation struct {
 	name          *string
 	filePath      *string
 	url           *string
+	bright        *float64
+	addbright     *float64
 	flashy        *float64
 	addflashy     *float64
 	adult         *float64
@@ -520,6 +522,62 @@ func (m *WebsiteMutation) OldURL(ctx context.Context) (v string, err error) {
 // ResetURL resets all changes to the "url" field.
 func (m *WebsiteMutation) ResetURL() {
 	m.url = nil
+}
+
+// SetBright sets the "bright" field.
+func (m *WebsiteMutation) SetBright(f float64) {
+	m.bright = &f
+	m.addbright = nil
+}
+
+// Bright returns the value of the "bright" field in the mutation.
+func (m *WebsiteMutation) Bright() (r float64, exists bool) {
+	v := m.bright
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBright returns the old "bright" field's value of the Website entity.
+// If the Website object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WebsiteMutation) OldBright(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBright is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBright requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBright: %w", err)
+	}
+	return oldValue.Bright, nil
+}
+
+// AddBright adds f to the "bright" field.
+func (m *WebsiteMutation) AddBright(f float64) {
+	if m.addbright != nil {
+		*m.addbright += f
+	} else {
+		m.addbright = &f
+	}
+}
+
+// AddedBright returns the value that was added to the "bright" field in this mutation.
+func (m *WebsiteMutation) AddedBright() (r float64, exists bool) {
+	v := m.addbright
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetBright resets all changes to the "bright" field.
+func (m *WebsiteMutation) ResetBright() {
+	m.bright = nil
+	m.addbright = nil
 }
 
 // SetFlashy sets the "flashy" field.
@@ -836,7 +894,7 @@ func (m *WebsiteMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *WebsiteMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 9)
 	if m.name != nil {
 		fields = append(fields, website.FieldName)
 	}
@@ -845,6 +903,9 @@ func (m *WebsiteMutation) Fields() []string {
 	}
 	if m.url != nil {
 		fields = append(fields, website.FieldURL)
+	}
+	if m.bright != nil {
+		fields = append(fields, website.FieldBright)
 	}
 	if m.flashy != nil {
 		fields = append(fields, website.FieldFlashy)
@@ -875,6 +936,8 @@ func (m *WebsiteMutation) Field(name string) (ent.Value, bool) {
 		return m.FilePath()
 	case website.FieldURL:
 		return m.URL()
+	case website.FieldBright:
+		return m.Bright()
 	case website.FieldFlashy:
 		return m.Flashy()
 	case website.FieldAdult:
@@ -900,6 +963,8 @@ func (m *WebsiteMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldFilePath(ctx)
 	case website.FieldURL:
 		return m.OldURL(ctx)
+	case website.FieldBright:
+		return m.OldBright(ctx)
 	case website.FieldFlashy:
 		return m.OldFlashy(ctx)
 	case website.FieldAdult:
@@ -939,6 +1004,13 @@ func (m *WebsiteMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetURL(v)
+		return nil
+	case website.FieldBright:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBright(v)
 		return nil
 	case website.FieldFlashy:
 		v, ok := value.(float64)
@@ -983,6 +1055,9 @@ func (m *WebsiteMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *WebsiteMutation) AddedFields() []string {
 	var fields []string
+	if m.addbright != nil {
+		fields = append(fields, website.FieldBright)
+	}
 	if m.addflashy != nil {
 		fields = append(fields, website.FieldFlashy)
 	}
@@ -1006,6 +1081,8 @@ func (m *WebsiteMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *WebsiteMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
+	case website.FieldBright:
+		return m.AddedBright()
 	case website.FieldFlashy:
 		return m.AddedFlashy()
 	case website.FieldAdult:
@@ -1025,6 +1102,13 @@ func (m *WebsiteMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *WebsiteMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case website.FieldBright:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddBright(v)
+		return nil
 	case website.FieldFlashy:
 		v, ok := value.(float64)
 		if !ok {
@@ -1095,6 +1179,9 @@ func (m *WebsiteMutation) ResetField(name string) error {
 		return nil
 	case website.FieldURL:
 		m.ResetURL()
+		return nil
+	case website.FieldBright:
+		m.ResetBright()
 		return nil
 	case website.FieldFlashy:
 		m.ResetFlashy()

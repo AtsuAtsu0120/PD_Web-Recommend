@@ -8,15 +8,7 @@ import (
 	"sort"
 )
 
-func Ranking(data Website) []Data {
-
-	//DBのクライアントを生成
-	client, err := ent.Open("sqlite3", "file:test.db?_foreign_keys=on")
-	if err != nil {
-		log.Fatalf("failed opening connection to sqlite: %v", err)
-	}
-	defer client.Close()
-
+func Ranking(data Website, client *ent.Client) []Data {
 	// データからベクトルを生成する。
 	wantVector := createVector(data)
 
@@ -28,8 +20,8 @@ func Ranking(data Website) []Data {
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
-	for i := 0; i < len(dbData); i++ {
-		vector := createVector(Website{*dbData[i]})
+	for _, db := range dbData {
+		vector := createVector(Website{*db})
 		// ベクトルの距離を計算する。
 		var result float64
 		for j, v := range wantVector {
@@ -41,7 +33,7 @@ func Ranking(data Website) []Data {
 
 		// 距離をリストに代入
 		result = math.Sqrt(result)
-		distanceList = append(distanceList, Data{data.ID, result})
+		distanceList = append(distanceList, Data{db.ID, result})
 	}
 
 	// 最小を求める
@@ -52,7 +44,7 @@ func Ranking(data Website) []Data {
 }
 
 func createVector(data Website) []float64 {
-	vector := make([]float64, 1, 7)
+	vector := make([]float64, 0, 7)
 	if data.Adult != nil {
 		vector = append(vector, *data.Adult)
 	}
