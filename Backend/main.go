@@ -99,7 +99,7 @@ func getRanking(c echo.Context) error {
 	result := Search.Ranking(targetData, client)
 
 	websiteDatas := make([]ent.Website, 0, 5)
-	for i := 0; i < 4; i++ {
+	for i := 0; i < 3; i++ {
 		websiteData, err := client.Website.Query().Where(website.ID(result[i].Id)).Only(context.Background())
 		if err != nil {
 			log.Fatalf(err.Error())

@@ -82,9 +82,19 @@ export default function Slidef() {
     const data = await response.json();
     boxData = new Array<BoxDeta>();
 
-    data.forEach((element: { url: string; name: string }) => {
+    data.forEach((element: { url: string; name: string, filePath: string }) => {
+      let fileName = element.filePath;
+      fileName = fileName.replaceAll(" ", "_");
+      fileName = fileName.replaceAll("|", "");
+      fileName = fileName.replaceAll(":", "");
+      fileName = fileName.replaceAll("?", "");
+
+      let filePath = '/images' + fileName;
+
+      console.log(filePath);
+
       boxData.push({
-        imgsrc: '/cirkitHP.png',
+        imgsrc: filePath,
         href: element.url,
         title: element.name
       })
@@ -122,8 +132,6 @@ export default function Slidef() {
         </div>
         </form>
         <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalHeader>結果</ModalHeader>
-
           <ModalBody>
           <div className='bg-[#042f43]'>
             <div className='flex flex-col gap-12 text-xl pt-20 justify-center items-center'>
