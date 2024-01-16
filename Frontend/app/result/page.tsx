@@ -18,7 +18,7 @@ const BoxData: BoxDeta[] = [
   },
 ] 
 
-export default function Slidef(){
+export default function Slidef() {
   return(
   <div className='bg-[#042f43]'>
     <HeroSectinon/>

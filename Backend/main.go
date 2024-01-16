@@ -6,6 +6,7 @@ import (
 	"Backend/ent"
 	"Backend/ent/website"
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -18,6 +19,10 @@ import (
 
 func main() {
 	e := echo.New()
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 	e.Static("/static", "assets")
 
 	e.Use(middleware.Logger())
@@ -35,6 +40,8 @@ func getRanking(c echo.Context) error {
 	beautiful := c.FormValue("beautiful")
 	like := c.FormValue("like")
 	bright := c.FormValue("bright")
+
+	fmt.Println(adult)
 
 	//DBのクライアントを生成
 	client, err := ent.Open("sqlite3", "file:test.db?_foreign_keys=on")
@@ -61,32 +68,32 @@ func getRanking(c echo.Context) error {
 	// フォームの値を代入。
 	*targetData.Adult, err = strconv.ParseFloat(adult, 32)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatalf("aa" + err.Error())
 	}
 
 	*targetData.Bright, err = strconv.ParseFloat(bright, 32)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatalf("ii" + err.Error())
 	}
 
 	*targetData.Beautiful, err = strconv.ParseFloat(beautiful, 32)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatalf("uu" + err.Error())
 	}
 
 	*targetData.Smart, err = strconv.ParseFloat(smart, 32)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatalf("ee" + err.Error())
 	}
 
 	*targetData.Like, err = strconv.ParseFloat(like, 32)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatalf("oo" + err.Error())
 	}
 
 	*targetData.Flashy, err = strconv.ParseFloat(flashy, 32)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatalf("kaka" + err.Error())
 	}
 
 	result := Search.Ranking(targetData, client)
